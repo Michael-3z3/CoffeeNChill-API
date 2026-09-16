@@ -1,11 +1,12 @@
 # CoffeeNChill-API
 This is an API that I designed to use DockerHub to run an instance of it on the cloud just by some one else having downloaded docker. It shows my usage of Functions familiarity and containerization.
 
-# How to run it on Docker.
+# How to run it on Docker/Terminal.
+<p><b>Kindly note that u will need to run the codes on a terminal of your choice a administrator.</b></p>
 You would first need to have docker installed and working both on the client and server side.
 Then run these commands:
 
-1. docker network create coffeenchill-network (This creates the network that the azurite and functions app would use to communicate which other.)
+1. docker network create coffeenchill-network (This creates the network that the azurite and functions app would use to communicate with each other.)
 2. docker run -d --name coffeenchill-azurite --network coffeenchill-network --restart unless-stopped -p 10000:10000 -p 10001:10001 -p 10002:10002 -v c:\azurite-docker-data:/data mcr.microsoft.com/azure-storage/azurite azurite --location /data --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0 --skipApiVersionCheck
 (To be fair, alot of parameters here arent really compulsory, they aer just safety checks to increase the chances of it actually running. The code itself creates a container for an azurite instance and connects with the network u created earlier.)
 3. docker run -d --name coffeenchill --network coffeenchill-network -p 7071:80 -e AzureWebJobsStorage="DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://coffeenchill-azurite:10000/devstoreaccount1;QueueEndpoint=http://coffeenchill-azurite:10001/devstoreaccount1;TableEndpoint=http://coffeenchill-azurite:10002/devstoreaccount1;" michael3z3/coffeenchill-functions:v1.0
